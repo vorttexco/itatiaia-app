@@ -42,7 +42,13 @@ abstract class TabNavigatorViewModel extends State<TabNavigator> {
   }
 
   Future<void> onTabTapped(int index) async {
-    Provider.of<TabbarProvider>(context, listen: false).setReloadHome(true);
+    if (index == 3) {
+      Provider.of<TabbarProvider>(context, listen: false).setReloadStore(true);
+    }
+
+    if (index == 0) {
+      Provider.of<TabbarProvider>(context, listen: false).setReloadHome(true);
+    }
     setState(() {
       tabIndex = index;
     });
@@ -156,7 +162,7 @@ abstract class TabNavigatorViewModel extends State<TabNavigator> {
         title = 'Esportes';
         break;
       case 3:
-        title = 'Promoções';
+        title = 'Loja';
         break;
       case 4:
         title = 'Buscar';

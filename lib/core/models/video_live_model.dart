@@ -1,7 +1,6 @@
 // ignore_for_file: library_prefixes
 
-import 'package:html/dom.dart' as htmlDom;
-import 'package:html/parser.dart' as htmlParser;
+import 'package:html_unescape/html_unescape.dart';
 
 class VideoLiveModel {
   String? kind;
@@ -83,12 +82,13 @@ class Snippet {
   Snippet.fromJson(Map<String, dynamic> json) {
     publishedAt = json['publishedAt'];
     channelId = json['channelId'];
-    title = json['title'];
+    title = parseHtmlString(json['title']);
+
     description = json['description'];
     thumbnails = json['thumbnails'] == null
         ? null
         : Thumbnails.fromJson(json['thumbnails']);
-    channelTitle = parseHtmlString(json['channelTitle']);
+    channelTitle = json['channelTitle'];
     liveBroadcastContent = json['liveBroadcastContent'];
     publishTime = json['publishTime'];
   }
@@ -107,8 +107,8 @@ class Snippet {
   }
 
   String parseHtmlString(String htmlString) {
-    htmlDom.Document document = htmlParser.parse(htmlString);
-    return document.body?.text ?? '';
+    var unescape = HtmlUnescape();
+    return unescape.convert(htmlString);
   }
 }
 

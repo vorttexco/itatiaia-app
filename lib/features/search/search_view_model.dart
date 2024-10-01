@@ -56,8 +56,6 @@ abstract class SearchViewModel extends State<Search> {
       listOfResult.addAll(searchModel.payload ?? []);
       scrollController.animateTo(0,
           duration: Durations.medium2, curve: Curves.bounceIn);
-    } on Exception catch (e) {
-      Logger.log(e.toString());
     } finally {
       context.loaderOverlay.hide();
       setState(() {});

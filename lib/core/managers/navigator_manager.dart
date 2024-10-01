@@ -19,8 +19,12 @@ class NavigatorManager {
     });
   }
 
-  void fullModal(Widget widget,
-      {dynamic data, Function? onFinished, fullscreenDialog = false}) {
+  void fullModal(
+    Widget widget, {
+    dynamic data,
+    Function? onFinished,
+    fullscreenDialog = false,
+  }) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -94,6 +98,21 @@ class NavigatorManager {
           ),
         );
       },
+    );
+  }
+
+  void modalVideo(Widget child) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.black.withOpacity(0.7),
+      isScrollControlled: true,
+      builder: (context) => Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => Navigator.pop(context),
+          child: child,
+        ),
+      ),
     );
   }
 }

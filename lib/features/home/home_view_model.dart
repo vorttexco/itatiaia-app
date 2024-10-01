@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import '../../core/index.dart';
 import '../index.dart';
@@ -9,14 +9,14 @@ import '../index.dart';
 abstract class HomeViewModel extends State<Home> with WidgetsBindingObserver {
   List<MenuHomeModel> listOfHomeMenu = [];
   UserModel? userModel;
-  bool isLoading = true;
-  bool isFromMenu = true;
+
   int selectedIndex = 0;
 
   final scrollControllerMenu = ScrollController();
-  final webViewController = WebViewController();
+
   final userRepository = UserRepository(ApiConnector());
-  final webCookieManager = WebViewCookieManager();
+
+  InAppWebViewController? webViewController;
 
   final homeRepository = HomeRepository(ApiConnector());
 
@@ -26,44 +26,6 @@ abstract class HomeViewModel extends State<Home> with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addObserver(this);
 
-    webCookieManager.setCookie(const WebViewCookie(
-      name: "cookie_consent",
-      value: "true",
-      domain: ".tatiaia.com.br",
-      path: "/",
-    ));
-
-    webViewController.setJavaScriptMode(JavaScriptMode.unrestricted);
-    webViewController.setBackgroundColor(const Color(0x00000000));
-    webViewController.enableZoom(false);
-
-    webViewController.setNavigationDelegate(
-      NavigationDelegate(
-        onPageStarted: (String url) {
-          setState(() {
-            isLoading = true;
-          });
-          if (!isFromMenu) {
-            Logger.log('onPageStarted"$url');
-            navigateToInternalPage(url);
-            return;
-          }
-          isFromMenu = false;
-        },
-        onPageFinished: (url) {
-          setState(() {
-            isLoading = false;
-          });
-        },
-        onWebResourceError: (error) {
-          setState(() {
-            isLoading = false;
-          });
-        },
-      ),
-    );
-
-    webViewController.loadRequest(Uri.parse(ApiHome.home));
     loadView();
   }
 
@@ -101,18 +63,19 @@ abstract class HomeViewModel extends State<Home> with WidgetsBindingObserver {
   }
 
   void navigateToInternalPage(String url) {
-    NavigatorManager(context).to(
-      CustomWebView.route,
-      data: WebviewNavigatorModel(url: url, title: 'Home'),
-    );
+    NavigatorManager(context).to(CustomWebView.route,
+        data: WebviewNavigatorModel(url: url, title: 'Home'), onFinished: () {
+      webViewController?.goBack();
+    });
   }
 
   void onMenuSelected(MenuHomeModel menu, int index) {
-    isFromMenu = true;
     setState(() {
       selectedIndex = index;
     });
-    webViewController.loadRequest(Uri.parse('${menu.url}?hidemenu=true'));
+    webViewController?.loadUrl(
+      urlRequest: URLRequest(url: WebUri('${menu.url}?hidemenu=true')),
+    );
   }
 
   Future<void> login() async {
@@ -131,7 +94,6 @@ abstract class HomeViewModel extends State<Home> with WidgetsBindingObserver {
   }
 
   onTapLogo() {
-    isFromMenu = true;
     scrollControllerMenu.animateTo(0,
         duration: Durations.short2, curve: Curves.linear);
 
@@ -140,9 +102,9 @@ abstract class HomeViewModel extends State<Home> with WidgetsBindingObserver {
     });
 
     try {
-      webViewController.loadRequest(Uri.parse(ApiHome.home));
-    } on Exception catch (e) {
-      Logger.log(e.toString());
+      webViewController?.loadUrl(
+        urlRequest: URLRequest(url: WebUri(ApiHome.home)),
+      );
     } finally {}
   }
 }

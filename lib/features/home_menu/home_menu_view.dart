@@ -37,8 +37,9 @@ class HomeMenuView extends HomeMenuViewModel {
                           width: 5,
                           height: 5,
                           decoration: BoxDecoration(
-                              color: HexColor.fromHex(menu.color ?? '#CC0000'),
-                              borderRadius: BorderRadius.circular(3)),
+                            color: HexColor.fromHex(menu.color ?? '#CC0000'),
+                            borderRadius: BorderRadius.circular(3),
+                          ),
                         ),
                         const SizedBox(width: 6),
                         CustomText(

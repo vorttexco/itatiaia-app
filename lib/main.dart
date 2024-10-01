@@ -19,8 +19,6 @@ final audioPlayerHandler = AudioPlayerHandler();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-
   OneSignal.initialize(AppConstants.ONESIGNAL_KEY);
 
   OneSignal.Notifications.requestPermission(true);

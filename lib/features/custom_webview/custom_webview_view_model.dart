@@ -1,59 +1,42 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../core/index.dart';
 import './custom_webview.dart';
 
 abstract class CustomWebviewViewModel extends State<CustomWebView> {
   final userRepository = UserRepository(ApiConnector());
-  final controller = WebViewController();
+  InAppWebViewController? controller;
   UserModel? userModel;
-  bool isLoading = true;
+  String currentUrl = '';
 
   @override
   void initState() {
     super.initState();
-    controller.setJavaScriptMode(JavaScriptMode.unrestricted);
-    controller.setBackgroundColor(const Color(0x00000000));
-    controller.enableZoom(false);
-    controller.setNavigationDelegate(
-      NavigationDelegate(
-        onPageStarted: (String url) {
-          setState(() {
-            isLoading = true;
-          });
-        },
-        onPageFinished: (url) {
-          setState(() {
-            isLoading = false;
-          });
-        },
-        onWebResourceError: (WebResourceError error) {},
-      ),
-    );
-    Logger.log(widget.navigatorModel.url);
+    currentUrl = widget.navigatorModel.url;
     _loadView();
   }
 
   Future<void> _loadView() async {
     userModel = await userRepository.get(null);
     setState(() {});
-
-    try {
-      final url = '${widget.navigatorModel.url}?hidemenu=true';
-      controller.loadRequest(Uri.parse(url));
-    } on Exception catch (e) {
-      Logger.log(e.toString());
-    }
   }
 
   onBack() async {
-    if (await controller.canGoBack()) {
-      controller.goBack();
+    if (await controller?.canGoBack() ?? false) {
+      controller?.goBack();
       return;
     }
     NavigatorManager(context).back();
+  }
+
+  onShare() async {
+    final uri = await controller?.getUrl();
+    currentUrl = uri.toString().replaceAll('?hidemenu=true', '');
+
+    Share.share(currentUrl, subject: 'Itatiaia');
   }
 }

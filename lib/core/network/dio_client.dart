@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 
 import '../app/app_label.dart';
-import '../debug/logger.dart';
 import '../managers/app_manager.dart';
 import '../models/base_request.dart';
 import '../models/base_response.dart';
@@ -26,12 +25,10 @@ class ApiConnector implements InterfaceHttpClient {
     String? url = request.url;
 
     if (url != null) {
-      Logger.log('REQUEST-> METHOD: ${request.method} URL:$url');
       return url;
     }
     late String host = AppManager.hostApi;
     url = '$host${request.path}';
-    Logger.log('REQUEST-> METHOD: ${request.method} URL:$url');
     return url;
   }
 
@@ -59,7 +56,6 @@ class ApiConnector implements InterfaceHttpClient {
     } on DioException catch (e) {
       return _getErrorMessage(e);
     } catch (e) {
-      Logger.log(e.toString());
       return baseError;
     }
   }
@@ -87,7 +83,6 @@ class ApiConnector implements InterfaceHttpClient {
     } on DioException catch (e) {
       return _getErrorMessage(e);
     } catch (e) {
-      Logger.log(e.toString());
       return baseError;
     }
   }
@@ -117,7 +112,6 @@ class ApiConnector implements InterfaceHttpClient {
     } on DioException catch (e) {
       return _getErrorMessage(e);
     } catch (e) {
-      Logger.log(e.toString());
       return baseError;
     }
   }
@@ -151,7 +145,6 @@ class ApiConnector implements InterfaceHttpClient {
     } on DioException catch (e) {
       return _getErrorMessage(e);
     } catch (e) {
-      Logger.log(e.toString());
       return baseError;
     }
   }
@@ -185,7 +178,6 @@ class ApiConnector implements InterfaceHttpClient {
     } on DioException catch (e) {
       return _getErrorMessage(e);
     } catch (e) {
-      Logger.log(e.toString());
       return baseError;
     }
   }
@@ -202,7 +194,6 @@ class ApiConnector implements InterfaceHttpClient {
   }
 
   Future<BaseResponse> _getErrorMessage(DioException e) async {
-    Logger.log('response:${e.response.toString()}');
     if ((e.response?.statusCode ?? 0) > 500) {
       return BaseResponse(
         false,

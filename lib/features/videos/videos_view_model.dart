@@ -79,8 +79,8 @@ abstract class VideosViewModel extends State<Videos> {
         itemsOfMenu.removeAt(0);
       }
       menuSelected = itemsOfMenu.first;
+      videoModel = null;
       loadVideo();
-      Logger.log(e.toString());
     } finally {
       context.loaderOverlay.hide();
       setState(() {});
@@ -120,6 +120,7 @@ abstract class VideosViewModel extends State<Videos> {
       videoModel = await repository.videos(menuSelected?.url ?? '');
       scrollController.jumpTo(0);
     } catch (e) {
+      videoModel = null;
       Logger.log(e.toString());
     } finally {
       context.loaderOverlay.hide();

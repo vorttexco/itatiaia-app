@@ -107,13 +107,13 @@ class TabNavigatorView extends TabNavigatorViewModel {
         BottomNavigationBarItem(
           icon: Padding(
             padding: const EdgeInsets.only(top: 8),
-            child: SvgPicture.asset('assets/icons/promotion_off.svg'),
+            child: SvgPicture.asset('assets/icons/store_off.svg'),
           ),
           activeIcon: Padding(
             padding: const EdgeInsets.only(top: 8),
-            child: SvgPicture.asset('assets/icons/promotion_on.svg'),
+            child: SvgPicture.asset('assets/icons/store_on.svg'),
           ),
-          label: 'Promoções',
+          label: 'Loja',
         ),
         BottomNavigationBarItem(
           icon: Padding(

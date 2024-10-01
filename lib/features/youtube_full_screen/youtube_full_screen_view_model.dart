@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:itatiaia_app/main.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import '../../main.dart';
+
 import './youtube_full_screen.dart';
 
 abstract class YoutubeFullScreenViewModel extends State<YoutubeFullScreen> {
@@ -11,6 +12,9 @@ abstract class YoutubeFullScreenViewModel extends State<YoutubeFullScreen> {
   void dispose() {
     super.dispose();
     youtubePlayerController.dispose();
+    youtubePlayerController.removeListener(
+      () {},
+    );
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
@@ -26,8 +30,7 @@ abstract class YoutubeFullScreenViewModel extends State<YoutubeFullScreen> {
 
     youtubePlayerController = YoutubePlayerController(
       flags: const YoutubePlayerFlags(
-        autoPlay: false,
-        showLiveFullscreenButton: true,
+        autoPlay: true,
         controlsVisibleAtStart: true,
       ),
       initialVideoId: widget.videoId,

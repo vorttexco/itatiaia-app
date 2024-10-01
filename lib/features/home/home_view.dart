@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:itatiaia_app/core/components/custom_inapp_web_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/index.dart';
@@ -8,21 +9,24 @@ import './home_view_model.dart';
 class HomeView extends HomeViewModel {
   @override
   Widget build(BuildContext context) {
-    return Consumer<TabbarProvider>(
-      builder:
-          (BuildContext context, TabbarProvider tabBarView, Widget? child) {
-        if (tabBarView.reloadHome) {
-          WidgetsBinding.instance.addPostFrameCallback(
-            (_) {
-              Provider.of<TabbarProvider>(context, listen: false)
-                  .setReloadHome(false);
+    return PopScope(
+      canPop: false,
+      child: Consumer<TabbarProvider>(
+        builder:
+            (BuildContext context, TabbarProvider tabBarView, Widget? child) {
+          if (tabBarView.reloadHome) {
+            WidgetsBinding.instance.addPostFrameCallback(
+              (_) {
+                Provider.of<TabbarProvider>(context, listen: false)
+                    .setReloadHome(false);
 
-              onTapLogo();
-            },
-          );
-        }
-        return _buildBody();
-      },
+                onTapLogo();
+              },
+            );
+          }
+          return _buildBody();
+        },
+      ),
     );
   }
 
@@ -38,9 +42,12 @@ class HomeView extends HomeViewModel {
             selectedIndex: selectedIndex,
           ),
           Expanded(
-              child: CustomWebViewComponent(
-            webViewController: webViewController,
-            isLoading: isLoading,
+              child: CustomInAppWebViewComponent(
+            onCreated: (controller) {
+              webViewController = controller;
+            },
+            openExternalUrl: navigateToInternalPage,
+            initialUrl: ApiHome.home,
           ))
         ],
       ),

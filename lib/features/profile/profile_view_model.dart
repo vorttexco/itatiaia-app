@@ -9,7 +9,22 @@ abstract class ProfileViewModel extends State<Profile>
   UserModel? userModel;
   final userRepository = UserRepository(ApiConnector());
   bool hasPermission = false;
-  List<MenuHomeModel> listOfMenu = [];
+  List<MenuHomeModel> listOfMenu = [
+    MenuHomeModel(
+        label: 'Quem somos',
+        url: 'https://www.itatiaia.com.br/quem-somos?hidemenu=true'),
+    MenuHomeModel(
+        label: 'Politica de Privacidade',
+        url:
+            'https://www.itatiaia.com.br/politica-de-privacidade?hidemenu=true'),
+    MenuHomeModel(
+        label: 'Portal de Cookies',
+        url:
+            'https://www.itatiaia.com.br/politica-de-cookies-e-tecnologias-similares?hidemenu=true'),
+    MenuHomeModel(
+        label: 'Contato',
+        url: 'https://www.itatiaia.com.br/contato?hidemenu=true'),
+  ];
 
   @override
   void initState() {
@@ -38,22 +53,7 @@ abstract class ProfileViewModel extends State<Profile>
   Future<void> loadView() async {
     try {
       userModel = await userRepository.get(null);
-      hasPermission = OneSignal.Notifications.permission;
-      listOfMenu = await HomeRepository(ApiConnector()).menu();
-      // if (userModel != null) {
-      //   // listOfMenu.add(
-      //   //   MenuHomeModel(label: 'Logout', id: AppConstants.MENU_LOGOUT_ID),
-      //   // );
-      // }
     } finally {
-      setState(() {});
-    }
-  }
-
-  void onTapPermissionRequest(bool value) {
-    if (!OneSignal.Notifications.permission) {
-      OneSignal.Notifications.requestPermission(value);
-      hasPermission = OneSignal.Notifications.permission;
       setState(() {});
     }
   }
@@ -62,8 +62,9 @@ abstract class ProfileViewModel extends State<Profile>
     NavigatorManager(context).to(
       CustomWebView.route,
       data: WebviewNavigatorModel(
-          url: '${menu.url}?hidemenu=true',
-          title: menu.label ?? AppLabel.appName),
+          url: '${menu.url}',
+          title: menu.label ?? AppLabel.appName,
+          showShare: false),
     );
   }
 

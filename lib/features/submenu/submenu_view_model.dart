@@ -8,7 +8,7 @@ abstract class SubmenuViewModel extends State<Submenu> {
     if (menu!.items!.isEmpty) {
       NavigatorManager(context).to(CustomWebView.route,
           data: WebviewNavigatorModel(
-              title: menu.label ?? '', url: menu.url ?? ''));
+              title: menu.label ?? '', url: '${menu.url}?hidemenu=true'));
       return;
     }
 

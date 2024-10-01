@@ -24,4 +24,12 @@ class TabbarProvider with ChangeNotifier {
     _isVideoFullScreen = value;
     notifyListeners();
   }
+
+  bool _reloadStore = false;
+  bool get reloadStore => _reloadStore;
+
+  void setReloadStore(bool value) {
+    _reloadStore = value;
+    notifyListeners();
+  }
 }

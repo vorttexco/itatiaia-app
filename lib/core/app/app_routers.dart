@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:itatiaia_app/core/index.dart';
 import 'package:itatiaia_app/features/index.dart';
 import 'package:itatiaia_app/features/youtube_full_screen/youtube_full_screen.dart';
-
-import '../../../core/models/webview_navigator_model.dart';
 
 class AppRouters {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -21,6 +20,12 @@ class AppRouters {
         return MaterialPageRoute(builder: (_) => const Promotions());
       case Search.route:
         return MaterialPageRoute(builder: (_) => const Search());
+
+      case Submenu.route:
+        return MaterialPageRoute(
+            builder: (_) => Submenu(
+                  model: settings.arguments as MenuHomeModel,
+                ));
 
       case CustomWebView.route:
         return MaterialPageRoute(

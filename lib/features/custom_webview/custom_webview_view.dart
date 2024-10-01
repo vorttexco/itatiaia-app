@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:itatiaia_app/core/components/app_bar_webview.dart';
+import 'package:itatiaia_app/core/components/custom_inapp_web_view.dart';
 
-import '../../core/index.dart';
 import './custom_webview_view_model.dart';
 
 class CustomWebviewView extends CustomWebviewViewModel {
@@ -11,20 +12,17 @@ class CustomWebviewView extends CustomWebviewViewModel {
       child: Scaffold(
         body: Column(
           children: [
-            AppBarInternal(
-              titleWidget: CustomText(
-                widget.navigatorModel.title,
-                fontSize: AppConstants.KFONTSIZE_18,
-                fontWeight: FontWeight.w700,
-                textColor: Colors.black,
-                textAlign: TextAlign.center,
-              ),
+            AppBarwebView(
+              title: 'Voltar',
               onIconPressed: onBack,
+              onShare: widget.navigatorModel.showShare ? onShare : null,
             ),
             Expanded(
-              child: CustomWebViewComponent(
-                webViewController: controller,
-                isLoading: isLoading,
+              child: CustomInAppWebViewComponent(
+                onCreated: (controllerOrigin) {
+                  controller = controllerOrigin;
+                },
+                initialUrl: widget.navigatorModel.url,
               ),
             ),
           ],
