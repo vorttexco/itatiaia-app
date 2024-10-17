@@ -15,7 +15,7 @@ abstract class VideosViewModel extends State<Videos> {
   final repository = VideoRepository(ApiConnector());
 
   ScrollController scrollController = ScrollController();
-  VideoLiveModel? videoModel;
+  VideoModel? videoModel;
   VideoLiveModel? videoLiveModel;
 
   List<VideoMenuModel> itemsOfMenu = VideoMenuModel.list;
