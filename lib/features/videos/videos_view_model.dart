@@ -47,7 +47,9 @@ abstract class VideosViewModel extends State<Videos> {
     try {
       itemsOfMenu = VideoMenuModel.list;
       videoLiveModel = await repository.live();
-      if (videoLiveModel == null && videoLiveModel?.items == null) {
+      if (videoLiveModel == null ||
+          videoLiveModel?.items == null ||
+          videoLiveModel!.items!.isEmpty) {
         if (itemsOfMenu.length == 5) {
           itemsOfMenu.removeAt(0);
         }
@@ -118,7 +120,7 @@ abstract class VideosViewModel extends State<Videos> {
     Logger.log(menuSelected?.title);
     try {
       videoModel = await repository.videos(menuSelected?.url ?? '');
-      scrollController.jumpTo(0);
+      // scrollController.jumpTo(0);
     } catch (e) {
       videoModel = null;
       Logger.log(e.toString());
