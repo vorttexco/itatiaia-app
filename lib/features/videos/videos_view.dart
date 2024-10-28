@@ -46,7 +46,8 @@ class VideosView extends VideosViewModel {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: CustomText(
-                      videoLiveModel!.items!.isNotEmpty
+                      (videoLiveModel != null &&
+                              videoLiveModel!.items!.isNotEmpty)
                           ? (videoLiveModel?.items?.first.snippet?.title ?? '')
                           : '',
                       fontWeight: FontWeight.w700,
