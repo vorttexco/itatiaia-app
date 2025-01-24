@@ -2,10 +2,12 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <uses-permission android:name="android.permission.WAKE_LOCK" />
-  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
   <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
   <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.BLUETOOTH" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <uses-permission android:name="android.permission.BIND_CAR_SERVICE" />
 
   <meta-data
     android:name="com.onesignal.messaging.default_notification_icon"
@@ -22,6 +24,19 @@
     <meta-data
       android:name="com.google.android.gms.car.application"
       android:resource="@xml/automotive_app_desc" />
+
+    <meta-data
+      android:name="androidx.car.app.minCarApiLevel"
+      android:value="1" />
+
+    <service
+      android:name=".MyCarAppService"
+      android:exported="true">
+      <intent-filter>
+        <action android:name="androidx.car.app.CarAppService" />
+      </intent-filter>
+    </service>
+
 
     <!-- ADD THIS "SERVICE" element -->
     <service android:name="com.ryanheise.audioservice.AudioService"
