@@ -105,14 +105,29 @@ abstract class TabNavigatorViewModel extends State<TabNavigator> {
           await homeRepository.scheduleNow(currentRadioSelected?.uid ?? '');
       playNow = scheduleNowModel?.payload;
 
-      final mediaItem = MediaItem(
-        id: currentRadioSelected?.radioStreamingUrl ?? '',
-        title: currentRadioSelected?.name ?? '',
-        artist: 'Tocando ao vivo',
-        artUri: Uri.parse(AppConstants.LOGO_AUDIO_BG),
-      );
+      // for (CityPayload city in cityModel?.payload ?? []) {
+      //   if (city.name == currentRadioSelected?.name) {
+      //     continue;
+      //   }
 
-      await audioPlayerHandler.prepareToPlay(mediaItem);
+      //   final mediaItem = MediaItem(
+      //     id: city.radioStreamingUrl ?? '',
+      //     title: city.name ?? '',
+      //     artist: 'Tocando ao vivo',
+      //     artUri: Uri.parse(AppConstants.LOGO_AUDIO_BG),
+      //   );
+
+      //   await audioPlayerHandler.addQueueItem(mediaItem);
+      // }
+
+      // final mediaItem = MediaItem(
+      //   id: currentRadioSelected?.radioStreamingUrl ?? '',
+      //   title: currentRadioSelected?.name ?? '',
+      //   artist: 'Tocando ao vivo',
+      //   artUri: Uri.parse(AppConstants.LOGO_AUDIO_BG),
+      // );
+
+      // await audioPlayerHandler.prepareToPlay(mediaItem);
       await audioPlayerHandler.play();
     } finally {
       setState(() {});

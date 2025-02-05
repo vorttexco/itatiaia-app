@@ -50,7 +50,20 @@ class HomeRepository implements Repository<MenuHomeModel> {
   Future<CityModel?> cities() async {
     final response = await client.get(BaseRequest(path: ApiHome.cities));
     if (response.success) {
-      return CityModel.fromJson(response.data);
+      final resp = CityModel.fromJson(response.data);
+      final storage = StorageManager();
+      var radios = '';
+
+      for (CityPayload city in resp.payload ?? []) {
+        if (city.name == null) continue;
+
+        radios += '${city.name!};';
+        await storage.setString(city.name!, jsonEncode(city.toJson()));
+      }
+
+      await storage.setString(AppConstants.SHARED_PREFERENCES_RADIOS, radios);
+
+      return resp;
     }
     return null;
   }

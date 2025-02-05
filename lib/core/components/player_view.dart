@@ -57,7 +57,7 @@ class _PlayerViewState extends State<PlayerView>
 
   Future<void> onSlideChange(double value) async {
     volumePosition = value;
-    audioPlayerHandler.volume(value);
+    await audioPlayerHandler.setVolume(value);
 
     setState(() {});
   }
@@ -102,7 +102,7 @@ class _PlayerViewState extends State<PlayerView>
       child: Row(
         children: [
           StreamBuilder<bool>(
-            stream: audioHandler.playbackState
+            stream: audioPlayerHandler.playbackState
                 .map((state) => state.playing)
                 .distinct(),
             builder: (context, snapshot) {
@@ -112,13 +112,13 @@ class _PlayerViewState extends State<PlayerView>
                 children: [
                   if (playing)
                     InkWell(
-                      onTap: audioHandler.pause,
+                      onTap: audioPlayerHandler.pause,
                       child: SvgPicture.asset('assets/icons/pause.svg',
                           width: 35, height: 35),
                     )
                   else
                     InkWell(
-                      onTap: audioHandler.play,
+                      onTap: audioPlayerHandler.play,
                       child: SvgPicture.asset('assets/icons/play.svg',
                           width: 35, height: 35),
                     )

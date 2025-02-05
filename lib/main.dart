@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,9 +14,9 @@ import 'core/commons/player/audio_player_handler.dart';
 import 'core/providers/tab_bar_provider.dart';
 
 // ignore: unused_element
-late AudioHandler audioHandler;
+// late AudioHandler audioHandler;
 
-final audioPlayerHandler = AudioPlayerHandler();
+late AudioPlayerHandler audioPlayerHandler;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,14 +31,59 @@ Future<void> main() async {
     statusBarIconBrightness: Brightness.light,
   ));
 
-  audioHandler = await AudioService.init(
-    builder: () => audioPlayerHandler,
-    config: const AudioServiceConfig(
-      androidNotificationChannelId: 'br.com.itatiaia.channel.id',
-      androidNotificationChannelName: 'Audio playback',
-      androidNotificationOngoing: true,
-    ),
-  );
+  final radios =
+      await StorageManager().getString(AppConstants.SHARED_PREFERENCES_RADIOS);
+
+  if (radios != null) {
+    final library = MediaLibrary();
+    final List<MediaItem> items = List.empty(growable: true);
+
+    for (var radio in radios.split(';')) {
+      final radioJson = await StorageManager().getString(radio);
+
+      if (radioJson != null) {
+        final city = CityPayload.fromJson(jsonDecode(radioJson));
+
+        final mediaItem = MediaItem(
+          id: city.radioStreamingUrl ?? '',
+          title: city.name ?? '',
+          artist: 'Tocando ao vivo',
+          artUri: Uri.parse(AppConstants.LOGO_AUDIO_BG),
+        );
+
+        items.add(mediaItem);
+      }
+    }
+
+    library.items = <String, List<MediaItem>>{
+      AudioService.browsableRootId: [
+        const MediaItem(
+          id: MediaLibrary.albumsRootId,
+          title: "Radios",
+          playable: false,
+        ),
+      ],
+      MediaLibrary.albumsRootId: items,
+    };
+
+    audioPlayerHandler = await AudioService.init(
+      builder: () => AudioPlayerHandlerImpl(library),
+      config: const AudioServiceConfig(
+        androidNotificationChannelId: 'br.com.itatiaia.channel.id',
+        androidNotificationChannelName: 'Audio playback',
+        androidNotificationOngoing: true,
+      ),
+    );
+  } else {
+    audioPlayerHandler = await AudioService.init(
+      builder: () => AudioPlayerHandlerImpl(MediaLibrary()),
+      config: const AudioServiceConfig(
+        androidNotificationChannelId: 'br.com.itatiaia.channel.id',
+        androidNotificationChannelName: 'Audio playback',
+        androidNotificationOngoing: true,
+      ),
+    );
+  }
   runApp(const MyApp());
 }
 
