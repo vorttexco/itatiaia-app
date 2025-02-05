@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:itatiaia_app/core/index.dart';
 import 'package:itatiaia_app/features/index.dart';
+import 'package:itatiaia_app/features/notifications_settings/notifications_settings.dart';
 import 'package:itatiaia_app/features/youtube_full_screen/youtube_full_screen.dart';
 
 class AppRouters {
@@ -37,6 +38,9 @@ class AppRouters {
             builder: (_) => YoutubeFullScreen(
                   videoId: settings.arguments as String,
                 ));
+      case NotificationsSettings.route:
+        return MaterialPageRoute(
+            builder: (_) => const NotificationsSettings());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

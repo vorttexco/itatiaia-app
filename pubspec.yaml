@@ -43,13 +43,13 @@ dependencies:
   just_audio: ^0.9.38
   audio_service: ^0.18.13
   rxdart: ^0.27.7
-  share_plus: ^9.0.0
+  share_plus: ^10.1.2
   loader_overlay: ^4.0.0
   provider: ^6.1.2
   googleapis: ^13.2.0
   googleapis_auth: ^1.6.0
   youtube_player_flutter: ^9.0.3
-  flutter_inappwebview: ^6.0.0
+  flutter_inappwebview: ^6.1.5
   html_unescape: ^2.0.0
   audio_session: ^0.1.21
 

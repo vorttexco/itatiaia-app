@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:itatiaia_app/features/notifications_settings/notifications_settings.dart';
 
 import '../../core/index.dart';
 import './profile_view_model.dart';
@@ -28,7 +28,8 @@ class ProfileView extends ProfileViewModel {
           ListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
             onTap: () {
-              OneSignal.InAppMessages.addTrigger('open-config', 'true');
+              NavigatorManager(context).to(NotificationsSettings.route);
+              //OneSignal.InAppMessages.addTrigger('open-config', 'true');
             },
             title: const CustomText(
               'Notificações',

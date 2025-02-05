@@ -10,10 +10,10 @@ PODS:
   - flutter_inappwebview_ios (0.0.1):
     - Flutter
     - flutter_inappwebview_ios/Core (= 0.0.1)
-    - OrderedSet (~> 5.0)
+    - OrderedSet (~> 6.0.3)
   - flutter_inappwebview_ios/Core (0.0.1):
     - Flutter
-    - OrderedSet (~> 5.0)
+    - OrderedSet (~> 6.0.3)
   - flutter_native_splash (0.0.1):
     - Flutter
   - just_audio (0.0.1):
@@ -67,7 +67,7 @@ PODS:
     - OneSignalXCFramework/OneSignalNotifications
     - OneSignalXCFramework/OneSignalOSCore
     - OneSignalXCFramework/OneSignalOutcomes
-  - OrderedSet (5.0.0)
+  - OrderedSet (6.0.3)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -126,21 +126,21 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/darwin"
 
 SPEC CHECKSUMS:
-  audio_service: f509d65da41b9521a61f1c404dd58651f265a567
-  audio_session: 088d2483ebd1dc43f51d253d4a1c517d9a2e7207
-  connectivity_plus: ddd7f30999e1faaef5967c23d5b6d503d10434db
+  audio_service: 2023a4a1bdb2fd1443e7b00bdbdb1baa321525db
+  audio_session: 9bb7f6c970f21241b19f5a3658097ae459681ba0
+  connectivity_plus: 2256d3e20624a7749ed21653aafe291a46446fee
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_inappwebview_ios: 97215cf7d4677db55df76782dbd2930c5e1c1ea0
-  flutter_native_splash: edf599c81f74d093a4daf8e17bd7a018854bc778
-  just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
-  onesignal_flutter: aecb9bab7b87b6b6a0887c103932c9f5488759e5
+  flutter_inappwebview_ios: b89ba3482b96fb25e00c967aae065701b66e9b99
+  flutter_native_splash: 35ddbc7228eafcb3969dcc5f1fbbe27c1145a4f0
+  just_audio: 6c031bb61297cf218b4462be616638e81c058e97
+  onesignal_flutter: 679e751ec00f77fd131a1a559a860af1737d9516
   OneSignalXCFramework: 356e59953e157f6e45a7fdfc863073b3168b2d01
-  OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
-  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
-  share_plus: 8875f4f2500512ea181eef553c3e27dba5135aad
-  shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
-  sqflite: 673a0e54cc04b7d6dba8d24fb8095b31c3a99eec
+  OrderedSet: e539b66b644ff081c73a262d24ad552a69be3a94
+  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+  share_plus: 50da8cb520a8f0f65671c6c6a99b3617ed10a58a
+  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
+  sqflite: c35dad70033b8862124f8337cc994a809fcd9fa3
 
 PODFILE CHECKSUM: 5d67993452cdeebf0aa0e98823b103130a5c6099
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
