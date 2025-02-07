@@ -28,6 +28,9 @@ class AppConstants {
   static const String SHARED_PREFERENCES_SAVE_USER =
       'SHARED_PREFERENCES_SAVE_USER';
 
+  static const String SHARED_PREFERENCES_VIEW_NOTIFICATIONS_SETTINGS =
+    'SHARED_PREFERENCES_VIEW_NOTIFICATIONS_SETTINGS';
+
   static const ONESIGNAL_KEY = '7f45e49c-1617-480f-95a4-e7fc0e3349e8';
   static const GOOGLE_CLIENT_IS =
       '259226150264-vd06qcb528cjjgoab67eithtu566op8k.apps.googleusercontent.com';
