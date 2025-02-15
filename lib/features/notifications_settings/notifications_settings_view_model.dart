@@ -9,6 +9,7 @@ abstract class NotificationsSettingsViewModel
     extends State<NotificationsSettings> {
   final Map<String, bool> notificationOptions = {};
   bool updatedPreferences = false;
+
   @override
   void initState() {
     super.initState();
@@ -19,15 +20,30 @@ abstract class NotificationsSettingsViewModel
   void _getOptions() async {
     context.loaderOverlay.show();
 
-    final options = await HomeRepository(ApiConnector()).menu();
     final tags = await OneSignal.User.getTags();
+    
+    final options = [
+      {"label": "Urgente"},
+      {"label": "Agro"},
+      {"label": "Atlético"},
+      {"label": "Brasil e Mundo"},
+      {"label": "Cidades"},
+      {"label": "Cruzeiro"},
+      {"label": "Entretenimento"},
+      {"label": "Política"},
+      {"label": "Saúde"},
+      {"label": "Tudo de Esportes"},
+      {"label": "Vôlei"},
+    ];
 
-    for (var item in options) {
-      if (item.label == null) continue;
+    for (var option in options) {
+      final label = option["label"];
 
-      final bool value = bool.tryParse(tags[item.label!] ?? '') ?? true;
+      if (label == null) continue;
 
-      notificationOptions[item.label!] = value;
+      final bool value = bool.tryParse(tags[label]?.toString() ?? '') ?? true;
+
+      notificationOptions[label] = value;
     }
 
     setState(() {

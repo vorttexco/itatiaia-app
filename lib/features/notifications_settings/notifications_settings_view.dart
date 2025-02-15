@@ -12,12 +12,15 @@ class NotificationsSettingsView extends NotificationsSettingsViewModel {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              const Text(
-                'Configuração de notificações',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Configuração de notificações',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -25,7 +28,7 @@ class NotificationsSettingsView extends NotificationsSettingsViewModel {
                 'Personalize sua experiência selecionando as editoriais de seu interesse',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 18,
+                  fontSize: 16,
                 ),
               ),
               const SizedBox(height: 12),
