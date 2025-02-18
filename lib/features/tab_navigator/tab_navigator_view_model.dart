@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -57,6 +59,11 @@ abstract class TabNavigatorViewModel extends State<TabNavigator> {
   loadView() async {
     try {
       cityModel = await homeRepository.cities();
+
+      if (cityModel != null) {
+        print('Rádios: ');
+        print(jsonEncode(cityModel!.toJson()));
+      }
 
       scheduleModel =
           await homeRepository.schedule(currentRadioSelected?.uid ?? '');

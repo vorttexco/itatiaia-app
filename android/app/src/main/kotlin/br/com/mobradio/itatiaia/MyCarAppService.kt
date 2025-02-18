@@ -13,10 +13,7 @@ class MyCarAppService : CarAppService() {
 
     override fun onCreateSession(): Session {
         return object : Session() {
-            override fun onCreateScreen(intent: Intent): Screen {
-                // Start with the WelcomeScreen
-                return WelcomeScreen(carContext)
-            }
+            override fun onCreateScreen(intent: Intent) = WelcomeScreen(carContext)
         }
     }
 }
