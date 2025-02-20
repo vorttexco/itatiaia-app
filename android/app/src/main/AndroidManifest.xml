@@ -37,7 +37,6 @@
       </intent-filter>
     </service>
 
-
     <!-- ADD THIS "SERVICE" element -->
     <service android:name="com.ryanheise.audioservice.AudioService"
       android:foregroundServiceType="mediaPlayback"
