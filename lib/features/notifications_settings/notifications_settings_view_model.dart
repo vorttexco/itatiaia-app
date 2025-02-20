@@ -3,8 +3,6 @@ import 'package:itatiaia_app/features/notifications_settings/notifications_setti
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
-import '../../core/index.dart';
-
 abstract class NotificationsSettingsViewModel
     extends State<NotificationsSettings> {
   final Map<String, bool> notificationOptions = {};
@@ -21,7 +19,7 @@ abstract class NotificationsSettingsViewModel
     context.loaderOverlay.show();
 
     final tags = await OneSignal.User.getTags();
-    
+
     final options = [
       {"label": "Urgente"},
       {"label": "Agro"},
