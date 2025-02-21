@@ -32,7 +32,7 @@ class WelcomeScreen(carContext: CarContext) : Screen(carContext) {
             }
             .build()
 
-            val gridItem2 = GridItem.Builder()
+        val gridItem2 = GridItem.Builder()
             .setTitle("Juiz de Fora")
             .setImage(
                 CarIcon.Builder(
@@ -45,7 +45,7 @@ class WelcomeScreen(carContext: CarContext) : Screen(carContext) {
             }
             .build()
 
-            val gridItem3 = GridItem.Builder()
+        val gridItem3 = GridItem.Builder()
             .setTitle("Montes Claros")
             .setImage(
                 CarIcon.Builder(
@@ -58,7 +58,7 @@ class WelcomeScreen(carContext: CarContext) : Screen(carContext) {
             }
             .build()
 
-            val gridItem4 = GridItem.Builder()
+        val gridItem4 = GridItem.Builder()
             .setTitle("Outo Preto")
             .setImage(
                 CarIcon.Builder(
@@ -71,7 +71,7 @@ class WelcomeScreen(carContext: CarContext) : Screen(carContext) {
             }
             .build()
 
-            val gridItem5 = GridItem.Builder()
+        val gridItem5 = GridItem.Builder()
             .setTitle("Vale do Aço")
             .setImage(
                 CarIcon.Builder(
@@ -84,7 +84,7 @@ class WelcomeScreen(carContext: CarContext) : Screen(carContext) {
             }
             .build()
 
-            val gridItem6 = GridItem.Builder()
+        val gridItem6 = GridItem.Builder()
             .setTitle("Varginha")
             .setImage(
                 CarIcon.Builder(
@@ -95,6 +95,15 @@ class WelcomeScreen(carContext: CarContext) : Screen(carContext) {
             .setOnClickListener {
                 playStream("https://stm01.virtualcast.com.br:8002/itatiaiasulminas?tid=01GQN8H8MDSGQTH6XCTKPM06GS")
             }
+            .build()
+
+        val itemList = ItemList.Builder()
+            .addItem(gridItem1)
+            .addItem(gridItem2)
+            .addItem(gridItem3)
+            .addItem(gridItem4)
+            .addItem(gridItem5)
+            .addItem(gridItem6)
             .build()
         
         return GridTemplate.Builder()
