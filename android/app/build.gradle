@@ -70,11 +70,15 @@ android {
 dependencies {
     implementation "androidx.car.app:app:1.4.0"
 
-    // Ensure you have the AndroidX Media dependency
-    implementation "androidx.media:media:1.6.0"
+    // // Ensure you have the AndroidX Media dependency
+    // implementation "androidx.media:media:1.6.0"
 
-    // Support library for media session
-    implementation "androidx.media2:media2-session:1.2.1"
+    // // Support library for media session
+    // implementation "androidx.media2:media2-session:1.2.1"
+
+    implementation 'androidx.media3:media3-exoplayer:1.1.1'
+    implementation 'androidx.media3:media3-common:1.1.1'
+    implementation "androidx.media3:media3-session:1.1.1"
 }
 
 flutter {

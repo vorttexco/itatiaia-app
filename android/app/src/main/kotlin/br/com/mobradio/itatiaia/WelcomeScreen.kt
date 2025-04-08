@@ -1,6 +1,23 @@
 package br.com.mobradio.itatiaia
 
+// import android.util.Log
+// import androidx.car.app.Screen
+// import androidx.car.app.model.Action
+// import androidx.car.app.model.GridItem
+// import androidx.car.app.model.GridTemplate
+// import androidx.car.app.model.Template
+// import androidx.core.graphics.drawable.IconCompat
+// import androidx.car.app.model.CarIcon
+// import androidx.car.app.model.ItemList
+// import androidx.car.app.CarContext
+// import androidx.media3.exoplayer.ExoPlayer
+// import androidx.media3.common.MediaItem
+import android.content.Context
+import android.media.AudioAttributes
+import android.media.AudioFocusRequest
+import android.media.AudioManager
 import android.util.Log
+import androidx.car.app.CarContext
 import androidx.car.app.Screen
 import androidx.car.app.model.Action
 import androidx.car.app.model.GridItem
@@ -9,14 +26,51 @@ import androidx.car.app.model.Template
 import androidx.core.graphics.drawable.IconCompat
 import androidx.car.app.model.CarIcon
 import androidx.car.app.model.ItemList
-import androidx.car.app.CarContext
-import android.media.MediaPlayer
-import android.media.AudioManager
-import android.media.AudioAttributes
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.common.PlaybackException
+import androidx.media3.exoplayer.ExoPlayer
 
 class WelcomeScreen(carContext: CarContext) : Screen(carContext) {
-    private val mediaPlayer = MediaPlayer()
+    private var exoPlayer: ExoPlayer? = null
     
+    private val audioManager: AudioManager = carContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    private var audioFocusRequest: AudioFocusRequest? = null
+    private val audioFocusListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
+        when (focusChange) {
+            AudioManager.AUDIOFOCUS_LOSS -> {
+                exoPlayer?.pause()
+                abandonAudioFocus()
+            }
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> exoPlayer?.pause()
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> exoPlayer?.volume = 0.1f
+            AudioManager.AUDIOFOCUS_GAIN -> {
+                exoPlayer?.volume = 1.0f
+                exoPlayer?.play()
+            }
+        }
+    }
+
+    init {
+        initializePlayer()
+    }
+
+    fun initializePlayer() {
+        if (exoPlayer == null) {
+            exoPlayer = ExoPlayer.Builder(carContext).build().apply {
+                // Configurações adicionais do player
+                playWhenReady = false
+                addListener(object : Player.Listener {
+                    override fun onPlayerError(error: PlaybackException) {
+                        Log.e("WelcomeScreen", "Erro no player: ${error.message}")
+                    }
+                })
+            }
+        }
+    }
+
+
+
     override fun onGetTemplate(): Template {
         // Create the grid items
         val gridItem1 = GridItem.Builder()
@@ -28,7 +82,7 @@ class WelcomeScreen(carContext: CarContext) : Screen(carContext) {
                 GridItem.IMAGE_TYPE_LARGE
             )
             .setOnClickListener {
-                playStream("https://8903.brasilstream.com.br/stream")
+                playStream(carContext, "https://8903.brasilstream.com.br/stream")
             }
             .build()
 
@@ -41,7 +95,7 @@ class WelcomeScreen(carContext: CarContext) : Screen(carContext) {
                 GridItem.IMAGE_TYPE_LARGE
             )
             .setOnClickListener {
-                playStream("https://live.paineldj.com.br/proxy/itatiaia?mp=/stream")
+                playStream(carContext, "https://live.paineldj.com.br/proxy/itatiaia?mp=/stream")
             }
             .build()
 
@@ -54,12 +108,12 @@ class WelcomeScreen(carContext: CarContext) : Screen(carContext) {
                 GridItem.IMAGE_TYPE_LARGE
             )
             .setOnClickListener {
-                playStream("https://9607.brasilstream.com.br/stream?origem=site_oficial")
+                playStream(carContext, "https://9607.brasilstream.com.br/stream?origem=site_oficial")
             }
             .build()
 
         val gridItem4 = GridItem.Builder()
-            .setTitle("Outo Preto")
+            .setTitle("Ouro Preto")
             .setImage(
                 CarIcon.Builder(
                     IconCompat.createWithResource(carContext, R.drawable.ic_stat_onesignal_default)
@@ -67,7 +121,7 @@ class WelcomeScreen(carContext: CarContext) : Screen(carContext) {
                 GridItem.IMAGE_TYPE_LARGE
             )
             .setOnClickListener {
-                playStream("https://8002.brasilstream.com.br/stream")
+                playStream(carContext, "https://8002.brasilstream.com.br/stream")
             }
             .build()
 
@@ -80,7 +134,7 @@ class WelcomeScreen(carContext: CarContext) : Screen(carContext) {
                 GridItem.IMAGE_TYPE_LARGE
             )
             .setOnClickListener {
-                playStream("https://radio.saopaulo01.com.br:7000/stream")
+                playStream(carContext, "https://radio.saopaulo01.com.br:7000/stream")
             }
             .build()
 
@@ -93,7 +147,7 @@ class WelcomeScreen(carContext: CarContext) : Screen(carContext) {
                 GridItem.IMAGE_TYPE_LARGE
             )
             .setOnClickListener {
-                playStream("https://stm01.virtualcast.com.br:8002/itatiaiasulminas?tid=01GQN8H8MDSGQTH6XCTKPM06GS")
+                playStream(carContext, "https://stm01.virtualcast.com.br:8002/itatiaiasulminas?tid=01GQN8H8MDSGQTH6XCTKPM06GS")
             }
             .build()
 
@@ -113,36 +167,52 @@ class WelcomeScreen(carContext: CarContext) : Screen(carContext) {
             .build()
     }
 
-    fun playSong(songUrl: String) {
-        try {
-            mediaPlayer.reset()
-            mediaPlayer.setDataSource(songUrl)
-            mediaPlayer.prepare()
-            mediaPlayer.start()
-        } catch (e: Exception) {
-            e.printStackTrace()
+    fun playStream(context: CarContext, streamUrl: String) {
+        // initializePlayer();
+
+        val focusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+            .setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .build()
+            )
+            .setOnAudioFocusChangeListener(audioFocusListener)
+            .build()
+
+        val result = audioManager.requestAudioFocus(focusRequest)
+        
+        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            exoPlayer?.let { player ->
+                try {
+                    player.setMediaItem(MediaItem.fromUri(streamUrl))
+                    player.prepare()
+                    player.play()
+                    audioFocusRequest = focusRequest
+                } catch (e: Exception) {
+                    Log.e("WelcomeScreen", "Erro ao reproduzir stream: ${e.message}")
+                }
+            }
+        } else {
+            Log.e("WelcomeScreen", "Falha ao obter audio focus")
         }
+        
+        // if (exoPlayer == null) {
+        //     exoPlayer = ExoPlayer.Builder(context).build()
+        // }
+    
+        // val mediaItem = MediaItem.fromUri(streamUrl)
+        // exoPlayer?.apply {
+        //     setMediaItem(mediaItem)
+        //     prepare()
+        //     play()
+        // }
     }
 
-    fun playStream(streamUrl: String) {
-        try {
-            mediaPlayer.reset()
-            mediaPlayer.setDataSource(streamUrl)
-    
-            // Set the audio attributes for modern API levels
-            val audioAttributes = AudioAttributes.Builder()
-                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                .setUsage(AudioAttributes.USAGE_MEDIA)
-                .build()
-    
-            mediaPlayer.setAudioAttributes(audioAttributes)
-    
-            mediaPlayer.setOnPreparedListener {
-                it.start()
-            }
-            mediaPlayer.prepareAsync() // Prepare asynchronously for streams
-        } catch (e: Exception) {
-            e.printStackTrace()
+    private fun abandonAudioFocus() {
+        audioFocusRequest?.let {
+            audioManager.abandonAudioFocusRequest(it)
+            audioFocusRequest = null
         }
     }
     
